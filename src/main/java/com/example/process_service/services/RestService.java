@@ -14,32 +14,44 @@ public class RestService {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    public Object getUserForId(int id) {
-        String url = "http://localhost:8080/user/" + id;
-        return this.restTemplate.getForObject(url, Object.class);
-    }
-
-    public Object createUser(Object object) {
+    public Object getUsers(String priority) {
         String url = "http://localhost:8080/user";
-        return this.restTemplate.postForObject(url, object, Object.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("priority", priority);
+        HttpEntity<Object> entity = new HttpEntity<Object>("", headers);
+        return this.restTemplate.exchange(url, HttpMethod.GET, entity, Object.class);
     }
 
-    public Object updateUser(Object object, String id) {
+    public Object getUserForId(int id, String priority) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("priority", priority);
+        HttpEntity<Object> entity = new HttpEntity<Object>("", headers);
+        String url = "http://localhost:8080/user/" + id;
+        return this.restTemplate.exchange(url, HttpMethod.GET, entity, Object.class);
+    }
+
+    public Object createUser(Object object, String priority) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("priority", priority);
+        String url = "http://localhost:8080/user";
+        HttpEntity<Object> entity = new HttpEntity<>(object, headers);
+        return this.restTemplate.exchange(url, HttpMethod.POST, entity, Object.class);
+    }
+
+    public Object updateUser(Object object, String id, String priority) {
         String url = "http://localhost:8080/user/" + id;
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("priority", priority);
         HttpEntity<Object> entity = new HttpEntity<>(object, headers);
         return this.restTemplate.exchange(url, HttpMethod.PUT, entity, Object.class);
     }
 
-    public void deleteUser(String id) {
+    public void deleteUser(String id, String priority) {
         String url = "http://localhost:8080/user/" + id;
-        this.restTemplate.delete(url);
-    }
-
-    public Object getUsers() {
-        String url = "http://localhost:8080/user";
-        return this.restTemplate.getForObject(url, Object.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("priority", priority);
+        HttpEntity<Object> entity = new HttpEntity<>("", headers);
+        this.restTemplate.exchange(url, HttpMethod.DELETE, entity, Object.class);
     }
 
 

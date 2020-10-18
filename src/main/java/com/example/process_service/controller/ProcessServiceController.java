@@ -16,30 +16,30 @@ public class ProcessServiceController {
 
 
     @GetMapping("/user/{id}")
-    public Object show(@PathVariable String id) {
+    public Object show(@PathVariable String id, @RequestHeader("priority") String priority) {
         int userId = Integer.parseInt(id);
-        return restService.getUserForId(userId);
+        return restService.getUserForId(userId, priority);
     }
 
     @PostMapping("/user")
-    public Object createUser(@RequestBody Map<String, String> body) {
-        return restService.createUser(body);
+    public Object createUser(@RequestBody Map<String, String> body, @RequestHeader("priority") String priority) {
+        return restService.createUser(body, priority);
     }
 
     @PutMapping("/user/{id}")
-    public Object updateUser(@PathVariable String id, @RequestBody Map<String, String> body) throws ParseException {
-        return restService.updateUser(body, id);
+    public Object updateUser(@PathVariable String id, @RequestBody Map<String, String> body, @RequestHeader("priority") String priority) {
+        return restService.updateUser(body, id, priority);
     }
 
     @GetMapping("/user")
-    public Object show() {
-        return restService.getUsers();
+    public Object show(@RequestHeader("priority") String priority) {
+        return restService.getUsers(priority);
     }
 
 
     @DeleteMapping("user/{id}")
-    public void deleteUser(@PathVariable String id) {
-        restService.deleteUser(id);
+    public void deleteUser(@PathVariable String id, @RequestHeader("priority") String priority) {
+        restService.deleteUser(id, priority);
     }
 
 }
