@@ -33,9 +33,8 @@ public class ProcessServiceApplication {
         RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
         RestTemplate restTemplate = restTemplateBuilder.build();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("host", myBean.getMyHost()).put("port", myBean.getMyPort());
+        jsonObject.put("host", myBean.getMyHost()).put("port", Integer.parseInt(myBean.getMyPort()));
         HttpEntity<Object> entity = new HttpEntity<>(jsonObject.toString(), headers);
-
         System.out.println(restTemplate.exchange(gatewayHost + gatewayPort, HttpMethod.POST, entity, Object.class));
 
     }
